@@ -6,9 +6,8 @@ jobs:
     steps:
       - checkout
       - run: |
-      cd stable/alpine
-      docker build -t nginx:test .
-
+        cd stable/alpine && \
+        docker build -t nginx:test .
 workflows:
   version: 2
   build_and_test:
