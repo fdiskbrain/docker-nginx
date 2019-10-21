@@ -11,8 +11,18 @@ jobs:
           command: |
             cd stable/alpine && \
             docker build -t nginx:test .
+  hold:
+    type: approval
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          requires:
+            - hold
+          filters:
+            branches:
+              ignore:
+                - develop
+                - /feature*/
+              
