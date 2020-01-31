@@ -4,8 +4,8 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ENV NGINX_VERSION 1.14.2
 ENV LUA_MODULE_VERSION 0.10.15
-ENV LUAJIT_LIB=/usr/lib
-ENV LUAJIT_INC=/usr/include/luajit-2.0
+#ENV LUAJIT_LIB=/usr/lib
+#ENV LUAJIT_INC=/usr/include/luajit-2.0
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
