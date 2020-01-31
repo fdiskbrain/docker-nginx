@@ -94,7 +94,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm nginx.tar.gz \
 	&& tar -zxC /usr/src -f v0.33.tar.gz \
 	&& rm v0.33.tar.gz \
-	&& tar -zxC /usr/src lua.tar.gz \
+	&& tar -zxC /usr/src -f lua.tar.gz \
 	&& rm lua.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
