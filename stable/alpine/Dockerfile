@@ -91,11 +91,9 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm -rf "$GNUPGHOME" nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
 	&& tar -zxC /usr/src -f nginx.tar.gz \
-	&& rm nginx.tar.gz \
 	&& tar -zxC /usr/src -f v0.33.tar.gz \
-	&& rm v0.33.tar.gz \
 	&& tar -zxC /usr/src -f lua.tar.gz \
-	&& rm lua.tar.gz \
+	&& rm nginx.tar.gz v0.33.tar.gz lua.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
@@ -148,7 +146,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	\
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+	&& ln -sf /dev/stderr /var/log/nginx/error.log \
+	&& nginx -V
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
