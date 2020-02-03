@@ -34,7 +34,7 @@ workflows:
             branches:
               ignore:
                 - develop
-                - /feature*/
+ #               - /feature*/
       - push:
           requires:
             - build
