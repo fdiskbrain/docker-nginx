@@ -4,6 +4,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 # test ci
 ENV NGINX_VERSION 1.14.2
 ENV LUA_MODULE_VERSION 0.10.15
+ENV DEVEL_KIT_MODULE_VERSION 0.3.0
 ENV LUAJIT_LIB=/usr/lib
 ENV LUAJIT_INC=/usr/include/luajit-2.1
 
@@ -53,7 +54,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-file-aio \
 		--with-http_v2_module \
 		--add-dynamic-module=/usr/src/headers-more-nginx-module-0.33 \
-		--add-module=/usr/src/lua-nginx-module-$LUA_MODULE_VERSION \
+		--add-dynamic-module=/usr/src/lua-nginx-module-$LUA_MODULE_VERSION \
+		--add-dynamic-module =/usr/src/ngx_devel_kit-${NGX_DEVEL_KIT_VERSION} 
 	" \
 	&& addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
@@ -74,6 +76,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& curl -fSL https://github.com/openresty/headers-more-nginx-module/archive/v0.33.tar.gz -o v0.33.tar.gz \
+	&& curl -fSL https://github.com/simpl/ngx_devel_kit/archive/v$DEVEL_KIT_MODULE_VERSION.tar.gz -o ndk.tar.gz \
 	&& curl -fSL https://github.com/openresty/lua-nginx-module/archive/v$LUA_MODULE_VERSION.tar.gz -o lua.tar.gz \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& found=''; \
@@ -92,8 +95,9 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& mkdir -p /usr/src \
 	&& tar -zxC /usr/src -f nginx.tar.gz \
 	&& tar -zxC /usr/src -f v0.33.tar.gz \
+	&& tar -zxC /usr/src -f ndk.tar.gz \
 	&& tar -zxC /usr/src -f lua.tar.gz \
-	&& rm nginx.tar.gz v0.33.tar.gz lua.tar.gz \
+	&& rm nginx.tar.gz v0.33.tar.gz ndk.tar.gz lua.tar.gz \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
