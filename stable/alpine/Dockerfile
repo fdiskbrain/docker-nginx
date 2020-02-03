@@ -55,7 +55,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--with-http_v2_module \
 		--add-dynamic-module=/usr/src/headers-more-nginx-module-0.33 \
 		--add-dynamic-module=/usr/src/lua-nginx-module-$LUA_MODULE_VERSION \
-		--add-dynamic-module=/usr/src/ngx_devel_kit-${NGX_DEVEL_KIT_VERSION} \
+		--add-dynamic-module=/usr/src/ngx_devel_kit-${DEVEL_KIT_MODULE_VERSION} \
 	" \
 	&& addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
@@ -125,6 +125,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm -rf /usr/src/nginx-$NGINX_VERSION \
 	&& rm -rf /usr/src/headers-more-nginx-module-0.33 \
 	&& rm -rf /usr/src/lua-nginx-module-$LUA_MODULE_VERSION \
+	&& rm -rf /usr/src/ngx_devel_kit-${DEVEL_KIT_MODULE_VERSION} \
 	\
 	# Bring in gettext so we can get `envsubst`, then throw
 	# the rest away. To do this, we need to install `gettext`
