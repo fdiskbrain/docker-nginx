@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang
+    steps:
+      - checkout
+      - setup_remote_docker
+      # - setup_remote_docker:
+      #     docker_layer_caching: true
+      - run: 
+          name: buildimage
+          command: |
+            cd stable/alpine && \
+            docker build -t nginx:test .
+  push:
+    docker:
+      - image: circleci/golang
+    steps:
+      - run:
+          name: push image
+          command: |
+            echo "push"
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - hold:
+          type: approval
+      - build:
+          requires:
+            - hold
+          filters:
+            branches:
+              ignore:
+                - develop
+ #               - /feature*/
+      - push:
+          requires:
+            - build
+              
