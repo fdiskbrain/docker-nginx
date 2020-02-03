@@ -1,7 +1,7 @@
 FROM alpine:3.8
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
-
+# test ci
 ENV NGINX_VERSION 1.14.2
 ENV LUA_MODULE_VERSION 0.10.15
 ENV LUAJIT_LIB=/usr/lib
