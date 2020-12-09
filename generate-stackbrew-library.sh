@@ -3,16 +3,15 @@ set -eu
 
 declare -A aliases
 aliases=(
-	[mainline]='1 1.17 latest'
-	[stable]='1.16'
+	[mainline]='1 1.19 latest'
+	[stable]='1.18'
 )
 
 self="$(basename "$BASH_SOURCE")"
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
-base=buster
+base=debian
 
-versions=( */ )
-versions=( "${versions[@]%/}" )
+versions=( mainline stable )
 
 # get the most recent commit which modified any of "$@"
 fileCommit() {
@@ -64,12 +63,12 @@ for version in "${versions[@]}"; do
 	echo
 	cat <<-EOE
 		Tags: $(join ', ' "${versionAliases[@]}")
-		Architectures: amd64, arm32v7, arm64v8, i386, ppc64le, s390x
+		Architectures: amd64, arm32v5, arm32v7, arm64v8, i386, mips64le, ppc64le, s390x
 		GitCommit: $commit
 		Directory: $version/$base
 	EOE
 
-	for variant in buster-perl; do
+	for variant in debian-perl; do
 		commit="$(dirCommit "$version/$variant")"
 
 		variantAliases=( "${versionAliases[@]/%/-perl}" )
@@ -78,7 +77,7 @@ for version in "${versions[@]}"; do
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: amd64, arm32v7, arm64v8, i386, ppc64le, s390x
+			Architectures: amd64, arm32v5, arm32v7, arm64v8, i386, mips64le, ppc64le, s390x
 			GitCommit: $commit
 			Directory: $version/$variant
 		EOE
@@ -93,7 +92,7 @@ for version in "${versions[@]}"; do
 		echo
 		cat <<-EOE
 			Tags: $(join ', ' "${variantAliases[@]}")
-			Architectures: amd64, arm32v6, arm64v8, i386, ppc64le, s390x
+			Architectures: arm64v8, arm32v6, arm32v7, ppc64le, s390x, i386, amd64
 			GitCommit: $commit
 			Directory: $version/$variant
 		EOE
